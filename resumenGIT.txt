@@ -40,7 +40,7 @@ OTROS COMANDOS:
 
 
 
-TRABAJO COLABORATIVO: https://www.youtube.com/watch?v=xl3nxfbGkzY
+TRABAJO COLABORATIVO:
 
 - A [Origin] Pascualdas@gmail.com        - https://github.com/pascualdas/novela
 - B [Fork] marilyn_man18@hotmail.com     - https://github.com/pasqaldas/novela
