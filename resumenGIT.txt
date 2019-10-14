@@ -1,1 +1,124 @@
 Pendiente el resumen. 20191014-01:20am
+
+########### ACTUALIZACION DESDE EL FORK QUE REALIZARÁ UN PULLREQUEST ######################
+
+Config GIT: https://git-scm.com/book/es/v2
+
+- git init
+- git config --global user.name "John Doe"                  (Configuracion global para una maquina)
+- git config --global user.email johndoe@example.com        (Configuracion global para una maquina)
+- git config --list -> muestra toda la config
+- git remote add origin https://github.com/user/repo.git
+- git config --global alias.superlog "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+
+
+*configuracion SSH]: Generar Llave publica y privada: Requerido para hacer modificaciones en el repocitorio de nuestra cuenta de gitHub.
+
+    - ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -> Generamos una llave ssh.
+    - ir al directorio: usuario / .ssh / id_rsa.pub -> abrir con el bloc de notas, copiar contenido y pegar en github.
+    
+    [Modificamos la url del repo por la brindada en la opcion de clone -> Clone with SSH  y copiamos el link]
+    - git remote set-url fork git@github.com:pasqaldas/novela.git 
+
+
+DESCARGAR REPOSITORIO:
+- git clone git://github.com/schacon/grit.git
+- git fetch origin : descarga las actualizaciones del remoto que no estan en local.
+
+SUBIR:
+- git add -A
+- git commit -m nomCommit
+- git push origin master
+
+OTROS COMANDOS:
+- git comando --help : nos muestra la ayuda del comando requerido, eje: git remote --help -> muestra todo el uso de remote.
+- git  remote -v   muestra las urls de los remotos
+- git branch : muestra las ramas existentes.
+- git push fork --delete nomRamaRemotaEliminar
+- git reset --hard HEAD~1 -> Elimina ultimo commit.
+- git log --oneline
+
+
+
+TRABAJO COLABORATIVO: https://www.youtube.com/watch?v=xl3nxfbGkzY
+
+- A [Origin] Pascualdas@gmail.com        - https://github.com/pascualdas/novela
+- B [Fork] marilyn_man18@hotmail.com     - https://github.com/pasqaldas/novela
+
+0. [A] El programador A crea repositorio en blanco en gitHub, realiza cambios, crea commits locales y cuelga sus cambios al repo original 
+haciendo uso de:
+
+    - creamos directorio para el proyecto.
+    - git init
+    - git add README.md
+    - git commit -m "first commit"
+    - git remote add origin https://github.com/pascualdas/ejemploEnBlanco.git
+    - git push -u origin master
+    - configurar llave publica SSH y urlRepo (Apartado configuracion SSH).
+
+1. [B] Desde el gitHub de B, se crear un fork del repositorio original de A. Al momento de hacer el fork se creara una copia del repositorio 
+de A en el espacio de B, notandose en la cabecera del sitio el siguiente texto:
+   
+   - git remote -v
+
+    pasqaldas/novela forked 
+    from pascualdas/novela
+
+2. [B] Descargamos los archivos del directorio forked de B a nuestro equipo local:  
+
+    - git clone https://github.com/pasqaldas/novela.git
+    - cd /novela/
+
+3. [B] Entramos al directorio local y configuramos nuestros repositorios [Origin (Repo de A) y Fork (Mi repo B espejo de A)]:
+    Se requiere crear un enlace tanto con el directorio origianl como con el fork, se hace asi:
+
+    - git remote -v: muestra los remotos configurados, por defecto al clonar el repo fork, el remoto llamado origin estará apuntando a mi
+    URL de repor forked:
+    
+        origin  https://github.com/pasqaldas/novela.git (fetch)
+        origin  https://github.com/pasqaldas/novela.git (push)
+    
+    - git remote rename origin fork : me cambia el nombre del remoto de origin a fork, el resultado sera:
+
+        fork    https://github.com/pasqaldas/novela.git (fetch)
+        fork    https://github.com/pasqaldas/novela.git (push)
+
+        Modificar una url de repo remoto:
+        
+        - git remote set-url origin https://github.com/pascualdas/resumenGIT.git
+
+    - git remote add origin https://github.com/pascualdas/novela.git : agrega el remoto origin apuntando al repositorio original de A
+    - git remote -v: resultado de la configuracion de remotos:
+
+        fork    https://github.com/pasqaldas/novela.git (fetch)
+        fork    https://github.com/pasqaldas/novela.git (push)
+        origin  https://github.com/pascualdas/novela.git (fetch)
+        origin  https://github.com/pascualdas/novela.git (push)
+
+4. En un flujo de trabajo ideal, las modificaciones no se realizan en la rama principal o master, se debe crear una rama nueva para
+las nuevas modificaciones asi:
+
+    - git checkout -b ramaModificaciones
+
+    ahora procedemos a realizar cambios en el proyecto, a agregarlos al staging area y a crear los respectivos commits [Iteraccion Basica].
+    
+    - modificamos el proyecto.
+    - git add -A
+    - git commit -m nomCommit
+    
+5. Enviamos los cambios realizados a nuestro repo B remoto [FORK]: git push (remotoDestino) (rama)
+
+    - git branch --list [Muestra las ramas existes].
+    - git remote -v [Muestra los remotos configurados].
+    - git push fork ramaModificaciones -> si la ramaModificaciones no existe en el FORK REPO, se crea automaticamente. si se presentan
+    problemas de rechazo por permisos denegados, se debe revisar la configuracion de llaves SSH.
+
+6. Actualizar nuestro repositorio FORK, dado que ahora está desactualizado, esto debido a que se hicieron cambios locales que fueron enviados
+y aceptados (PullRequest) en el repositosio ORIGIN. ahora debemos actualizar el fork para que quede con los cambios del ORIGIN:
+
+    - git pull origin master : trae todo el historial del repositorio origin y lo descarga a master.
+    - git push fork master : le enviamos al repositorio FORK lo descargado a nuestra rama local, MASTER.
+    - git branch -d ramaModificaciones : eliminamos la rama utilizada anteriormente para los cambios, debemos estar ubicados en otra rama para poder borrarla.
+    - git push fork --delete ramaModificaciones : eliminamos la rama modificaciones tambien del repositorio FORK.
+
+    CONCLUIDO EL PROCEDIMIENTO
